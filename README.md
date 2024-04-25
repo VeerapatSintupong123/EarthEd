@@ -1,1 +1,1 @@
-# Frontend-EE
+EarthEdHub repository 
