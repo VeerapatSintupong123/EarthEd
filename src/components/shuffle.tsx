@@ -37,7 +37,7 @@ const ShuffleHero: React.FC = () => {
         className="w-full h-full"
       >
         <Image
-          src={squareData.find((sq) => sq.id === id)?.src as string}
+          src="https://drive.google.com/file/d/1jPzVyAwrI2YAxxZaM56eTcD5wOHeLzJu/view?usp=sharing"
           alt={`Shuffle ${id}`}
           width={200}
           height={100}
