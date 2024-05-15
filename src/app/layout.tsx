@@ -1,16 +1,22 @@
 import "./globals.css";
-import NavBar from "@/components/navbar";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "./api/auth/[...nextauth]/route";
+import NextAuthProvider from "@/providers/NextAuthProvider";
+import ClientWrapper from "@/components/ClientWrapper";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nextAuthSession = await getServerSession(authOptions);
+
   return (
     <html lang="en">
       <body>
-        <NavBar />
-        {children}
+        <NextAuthProvider session={nextAuthSession}>
+          <ClientWrapper>{children}</ClientWrapper>
+        </NextAuthProvider>
       </body>
     </html>
   );
