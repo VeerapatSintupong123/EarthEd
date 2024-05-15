@@ -1,6 +1,6 @@
 import "./globals.css";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "@/libs/auth";
 import NextAuthProvider from "@/providers/NextAuthProvider";
 import ClientWrapper from "@/components/ClientWrapper";
 
