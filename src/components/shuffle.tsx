@@ -37,7 +37,7 @@ const ShuffleHero: React.FC = () => {
         className="w-full h-full"
       >
         <Image
-          src="https://drive.google.com/file/d/1jPzVyAwrI2YAxxZaM56eTcD5wOHeLzJu/view?usp=sharing"
+          src="https://drive.google.com/uc?export=download&id=1jPzVyAwrI2YAxxZaM56eTcD5wOHeLzJu"
           alt={`Shuffle ${id}`}
           width={200}
           height={100}
