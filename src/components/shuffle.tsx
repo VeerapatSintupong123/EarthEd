@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import getShufflePic from "@/libs/getShufflePic";
+import Image from "next/image";
 
 const ShuffleHero: React.FC = () => {
   const { data: session } = useSession();
@@ -34,11 +35,14 @@ const ShuffleHero: React.FC = () => {
         layout
         transition={{ duration: 1.5, type: "spring" }}
         className="w-full h-full"
-        style={{
-          backgroundImage: `url(${squareData.find((sq) => sq.id === id)?.src})`,
-          backgroundSize: "cover",
-        }}
-      ></motion.div>
+      >
+        <Image
+          src={squareData.find((sq) => sq.id === id)?.src as string}
+          alt={`Shuffle ${id}`}
+          width={200}
+          height={100}
+        />
+      </motion.div>
     ));
   };
 
