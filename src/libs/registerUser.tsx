@@ -11,28 +11,25 @@ export default async function RegisterUser(
   schoolProvince: string,
   schoolLevel: string
 ) {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: name,
-        telephone_number: telephone_number,
-        email: email,
-        role: role,
-        password: password,
-        fullName: fullName,
-        gender: gender,
-        age: age,
-        schoolName: schoolName,
-        schoolProvince: schoolProvince,
-        schoolLevel: schoolLevel,
-      }),
-    }
-  );
+  const response = await fetch(`${process.env.BACKEND_URL}/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+      telephone_number: telephone_number,
+      email: email,
+      role: role,
+      password: password,
+      fullName: fullName,
+      gender: gender,
+      age: age,
+      schoolName: schoolName,
+      schoolProvince: schoolProvince,
+      schoolLevel: schoolLevel,
+    }),
+  });
 
   if (!response.ok) throw new Error("Failed to Register");
 
