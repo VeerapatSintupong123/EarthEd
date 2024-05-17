@@ -30,25 +30,8 @@ export default function NavBar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const fade = {
-    initial: {
-      opacity: 0,
-    },
-    animate: {
-      opacity: 1,
-    },
-    transition: {
-      delay: 0.2,
-      duration: 1.0,
-      ease: "easeOut",
-    },
-  };
-
   return (
-    <motion.nav
-      className="flex justify-between items-center w-full mx-auto py-3 border-2"
-      {...fade}
-    >
+    <nav className="flex justify-between items-center w-full mx-auto py-2 border-2">
       <div className="ml-[10px]">
         <Link href="/">
           <h1 className="font-extrabold text-3xl">EarthEd</h1>
@@ -61,7 +44,7 @@ export default function NavBar() {
         } md:w-auto w-full flex items-center px-5 pl-0`}
       >
         <ul className="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8 ml-[60px]">
-          <li>
+          <li className=" rounded-xl">
             <Link className="hover:text-gray-500 hover:underline" href="#">
               Profile
             </Link>
@@ -120,6 +103,6 @@ export default function NavBar() {
           </>
         )}
       </div>
-    </motion.nav>
+    </nav>
   );
 }

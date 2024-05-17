@@ -14,7 +14,7 @@ export default function ClientWrapper({
 
   return (
     <>
-      {showMenu && <NavBar />}
+      <header>{showMenu && <NavBar />}</header>
       {children}
     </>
   );

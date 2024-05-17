@@ -8,7 +8,13 @@ const nextConfig = {
         EMAILJS_TEMPLATE: process.env.EMAILJS_TEMPLATE
     },
     images: {
-        domains: ['drive.google.com'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'drive.google.com',
+                pathname: '/**',
+            }
+        ],
     },
 };
 
