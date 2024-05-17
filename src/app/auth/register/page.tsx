@@ -5,6 +5,7 @@ import WelcomeBack from "@/components/welcomeBack";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import emailjs from "emailjs-com";
+import Link from "next/link";
 
 export default function Register() {
   const { data: session } = useSession();
@@ -179,14 +180,25 @@ export default function Register() {
   return session ? (
     <WelcomeBack />
   ) : (
-    <main className="flex w-screen flex-col items-center min-h-[100vh] p-7 bg-gradient-to-br from-indigo-500 to-purple-500 overflow-hidden">
-      <div className="absolute left-[0vw] bottom-[40vh] sm:left-[10vw] sm:bottom-[45vh] md:left-[5vw] md:bottom-[45vh] lg:left-[5vw] lg:bottom-[50vh] xl:left-[20vw] xl:bottom-[45vh] w-64 h-64 rounded-full bg-emerald-600"></div>
-      <div className="absolute right-[0vw] bottom-[40vh] sm:right-[5vw] sm:bottom-[1vh] md:right-[5vw] md:bottom-[1vh] lg:right-[3vw] lg:bottom-[3vh] xl:right-[20vw] xl:bottom-[1vh] w-64 h-64 rounded-full bg-orange"></div>
-      <h1 className="text-3xl font-semibold mb-6 mt-10">Register</h1>
+    <main className="flex flex-col items-center min-h-[100vh] p-3 overflow-hidden bg-slate-200">
+      <h1 className="text-3xl font-semibold mb-6 mt-5">Register</h1>
+      <small className="-mt-5 mb-6 text-lg">
+        Already have an account?{" "}
+        <Link href="/api/auth/signin" className="text-blue-500">
+          Login
+        </Link>
+      </small>
       <div
         className="z-10 px-7 py-10 shadow border border-gray-300 space-y-3 bg-white rounded-xl flex flex-col w-full md:w-4/5 lg:w-4/5 xl:w-3/6"
         style={{ boxShadow: "rgb(38, 57, 77) 0px 20px 30px -10px" }}
       >
+        <div className="flex flex-col items-center -mt-4 mb-5">
+          <h1 className="text-3xl font-bold">EarthEd</h1>
+          <small className="text-red-500 font-bold">
+            Exploring the world, One lesson at a time
+          </small>
+        </div>
+
         <div className="w-1/2 mx-auto flex p-2">
           <div
             className={`w-1/2 ${selectMain} text-l flex justify-center rounded-t-lg border-main-100 hover:bg-slate-300 hover:cursor-pointer font-semibold`}
@@ -416,7 +428,7 @@ export default function Register() {
 
         <div>
           <button
-            className="bg-indigo-500 text-white py-3 rounded-md w-full font-semibold"
+            className="bg-indigo-500 text-white py-3 rounded-md w-full font-semibold active:scale-75"
             onClick={register}
           >
             REGISTER
