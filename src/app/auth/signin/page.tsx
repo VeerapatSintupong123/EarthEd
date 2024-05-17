@@ -43,7 +43,7 @@ export default function SignIn() {
   return session ? (
     <WelcomeBack></WelcomeBack>
   ) : (
-    <main className="flex w-screen flex-col items-center min-h-[100vh] p-7 bg-slate-200 overflow-hidden">
+    <main className="flex flex-col items-center min-h-[100vh] p-3 bg-slate-200 overflow-hidden">
       <h1 className="text-3xl font-semibold mb-6 mt-5">Login</h1>
       <small className="-mt-5 mb-6 text-lg">Welcome back.</small>
       <div
