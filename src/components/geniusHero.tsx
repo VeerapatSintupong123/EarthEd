@@ -1,29 +1,34 @@
 export default function GeniusHero() {
   return (
     <div
-      className="rounded-2xl w-full p-5 bg-slate-50 2xl:w-2/5"
-      style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}
+      className="rounded-2xl w-full p-6 bg-white 2xl:w-2/5"
+      style={{ boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 12px" }}
     >
-      <h1 className="text-center font-bold text-2xl m-2">GeoGenius</h1>
-      <hr className="h-1 bg-gray-600 mx-5 mb-4" />
-      <h1 className="text-center font-semibold text-lg mx-4">
-        Welcome to <span className="bg-orange p-1">GeoGenius!</span> Each day,
-        we provide a new question in either{" "}
-        <span className="bg-green-500 p-1">True</span> /{" "}
-        <span className="bg-red-500 p-1">False</span> or{" "}
-        <span className="bg-blue-500 p-1">multiple choice format</span>.
+      <h1 className="text-center font-bold text-2xl m-2 text-gray-800">
+        GeoGenius
       </h1>
-      <h1 className="text-center font-semibold text-lg mx-4">
-        For <span className="bg-yellow-500 p-1">unlimited</span> questions,
-        enroll in our course and <span className="bg-pink-500 p-1">enjoy</span>{" "}
-        endless <span className="bg-amber-500 p-1"> practice anytime</span>.
+      <hr className="h-1 bg-gray-300 mx-5 mb-4" />
+      <h1 className="font-semibold text-lg mx-4 text-gray-700 leading-relaxed">
+        <span className="font-bold text-3xl text-gray-900">Welcome</span> to{" "}
+        <span className="text-gray-900">GeoGenius!</span> Each day, we provide a
+        new question in either{" "}
+        <span className="text-blue-600 font-medium">True</span> /{" "}
+        <span className="text-red-600 font-medium">False</span> or{" "}
+        <span className="text-green-600 font-medium">
+          multiple choice format
+        </span>
+        .
       </h1>
-      <h1 className="text-center font-semibold text-lg mx-4">
-        <span className="bg-purple-500 p-1">Don't wait</span> for the daily
-        question take the course and{" "}
-        <span className="bg-rose-500 p-1">start now</span>!
+      <h1 className="font-semibold text-lg mx-4 text-gray-700 leading-relaxed mt-4">
+        For <span className="text-yellow-600 font-medium">unlimited</span>{" "}
+        questions, enroll in our course and{" "}
+        <span className="text-pink-600 font-medium">enjoy</span> endless{" "}
+        <span className="text-amber-600 font-medium">practice anytime</span>.{" "}
+        <span className="text-purple-600 font-medium">Don't wait</span> for the
+        daily question, take the course and{" "}
+        <span className="text-rose-600 font-medium">start now</span>!
       </h1>
-      <hr className="h-1 bg-gray-600 mx-5 m-4" />
+      <hr className="h-1 bg-gray-300 mx-5 mt-4" />
     </div>
   );
 }

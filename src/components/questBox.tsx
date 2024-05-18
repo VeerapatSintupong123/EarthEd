@@ -1,9 +1,56 @@
 "use client";
 
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function QuestBox() {
   const [selectedOption, setSelectedOption] = useState("");
+
+  const submit = () => {
+    if (selectedOption == "") {
+      Swal.fire({
+        title: "No answer",
+        text: "Please select answer",
+        icon: "error",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      return null;
+    }
+
+    Swal.fire({
+      icon: "info",
+      input: "text",
+      confirmButtonText: "Send",
+      title: "Send Answer",
+      inputLabel: "Anonymous name",
+      inputValidator: (value) => {
+        if (!value) {
+          return "You need to enter an anonymous name!";
+        }
+      },
+    }).then((res) => {
+      if (res.isConfirmed) {
+        if (selectedOption.match("Bangkok")) {
+          Swal.fire({
+            title: "Correct!",
+            text: "Yeah! You have a good knowledge",
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        } else {
+          Swal.fire({
+            title: "Wrong!",
+            text: "Nice try, See you tomorrow",
+            icon: "error",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        }
+      }
+    });
+  };
 
   const handleOptionChange = (event: any) => {
     setSelectedOption(event.target.value);
@@ -69,7 +116,10 @@ export default function QuestBox() {
         </div>
       </div>
       <div className="flex justify-center items-center">
-        <button className="bg-indigo-500 p-2 rounded-xl w-1/2 text-white">
+        <button
+          onClick={submit}
+          className="bg-indigo-500 p-2 rounded-xl w-1/2 text-white"
+        >
           Submit
         </button>
       </div>

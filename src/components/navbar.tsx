@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import Swal from "sweetalert2";
 import { signOut } from "next-auth/react";
@@ -50,12 +49,15 @@ export default function NavBar() {
             </Link>
           </li>
           <li>
-            <Link className="hover:text-gray-500 hover:underline" href="#">
+            <Link
+              className="hover:text-gray-500 hover:underline"
+              href="/course"
+            >
               Course
             </Link>
           </li>
           <li>
-            <Link className="hover:text-gray-500 hover:underline" href="#">
+            <Link className="hover:text-gray-500 hover:underline" href="/learn">
               Learn
             </Link>
           </li>

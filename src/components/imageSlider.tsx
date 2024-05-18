@@ -8,7 +8,7 @@ export default function ImageSlider({ images }: { images: string[] }) {
           {images.map((url, index) => (
             <div
               key={index}
-              className="w-full h-[250px] relative block m-1 flex-shrink-0 snap-start"
+              className="w-full h-[280px] relative m-1 flex-shrink-0 snap-start"
             >
               <Image
                 src={url}
