@@ -6,6 +6,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import emailjs from "emailjs-com";
 import Link from "next/link";
+import { ValidRegister } from "@/libs/validInput";
 
 export default function Register() {
   const { data: session } = useSession();
@@ -30,73 +31,21 @@ export default function Register() {
 
   const register = async () => {
     if (
-      !email ||
-      !name ||
-      !tel ||
-      !password ||
-      !rePass ||
-      !fullName ||
-      !gender ||
-      !age ||
-      !schoolName ||
-      !schoolProvince ||
-      !schoolLevel
-    ) {
-      Swal.fire({
-        title: "Invalid Input",
-        text: "Please provide information",
-        icon: "error",
-        timer: 2000,
-      });
-      return null;
-    }
-
-    if (tel.length !== 10) {
-      Swal.fire({
-        title: "Invalid Telephone Number",
-        text: "Telephone Number must be 10 digits.",
-        icon: "error",
-        timer: 2000,
-      });
-      return null;
-    }
-
-    if (password.length < 8 || rePass.length < 8) {
-      Swal.fire({
-        title: "Invalid Password",
-        text: "Password must be at least 8 characters long.",
-        icon: "error",
-        timer: 2000,
-      });
-      return null;
-    }
-
-    if (parseInt(age) < 0 && parseInt(age) > 100) {
-      Swal.fire({
-        title: "Invalid Age",
-        text: "Age is not in range (0-100)",
-        icon: "error",
-        timer: 2000,
-      });
-    }
-
-    if (gender === "") {
-      Swal.fire({
-        title: "Invalid gender",
-        text: "Please provide gender",
-        icon: "error",
-        timer: 2000,
-      });
-    }
-
-    if (!password.match(rePass)) {
-      Swal.fire({
-        title: "Invalid Password",
-        text: "Password is not match",
-        icon: "error",
-        timer: 2000,
-      });
-    }
+      !ValidRegister(
+        email,
+        name,
+        tel,
+        password,
+        rePass,
+        fullName,
+        gender,
+        age,
+        schoolName,
+        schoolProvince,
+        schoolLevel
+      )
+    )
+      return;
 
     emailjs.init(process.env.EMAILJS_ID as string);
     try {
@@ -189,7 +138,8 @@ export default function Register() {
         </Link>
       </small>
       <div
-        className="z-10 px-7 py-10 shadow border border-gray-300 space-y-3 bg-white rounded-xl flex flex-col w-full md:w-4/5 lg:w-4/5 xl:w-3/6"
+        className="z-10 px-7 py-10 shadow border border-gray-300 space-y-3 bg-white rounded-xl 
+        flex flex-col w-full md:w-4/5 lg:w-4/5 xl:w-3/6"
         style={{ boxShadow: "rgb(38, 57, 77) 0px 20px 30px -10px" }}
       >
         <div className="flex flex-col items-center -mt-4 mb-5">
@@ -201,7 +151,8 @@ export default function Register() {
 
         <div className="w-1/2 mx-auto flex p-2">
           <div
-            className={`w-1/2 ${selectMain} text-l flex justify-center rounded-t-lg border-main-100 hover:bg-slate-300 hover:cursor-pointer font-semibold`}
+            className={`w-1/2 ${selectMain} text-l flex justify-center rounded-t-lg border-main-100 
+            hover:bg-slate-300 hover:cursor-pointer font-semibold`}
             onClick={() => {
               setMenu(1);
             }}
@@ -209,7 +160,8 @@ export default function Register() {
             Main
           </div>
           <div
-            className={`w-1/2 ${selectExternal} text-l flex justify-center rounded-t-lg border-main-100 hover:bg-slate-300 hover:cursor-pointer font-semibold`}
+            className={`w-1/2 ${selectExternal} text-l flex justify-center rounded-t-lg border-main-100 
+            hover:bg-slate-300 hover:cursor-pointer font-semibold`}
             onClick={() => {
               setMenu(2);
             }}
@@ -243,11 +195,11 @@ export default function Register() {
               </label>
               <input
                 id="name"
-                placeholder="John Doe"
                 className="text-xl text-black font-semibold placeholder:text-xl border-2 
               focus:outline-none py-2 px-5 border-gray-300 rounded-md focus:border-blue-500"
                 type="text"
                 autoComplete="off"
+                placeholder="John"
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
@@ -259,11 +211,11 @@ export default function Register() {
               </label>
               <input
                 id="tel"
-                placeholder="1234567890"
                 className="text-xl text-black font-semibold placeholder:text-xl border-2 
               focus:outline-none py-2 px-5 border-gray-300 rounded-md focus:border-blue-500"
                 type="tel"
                 autoComplete="off"
+                placeholder="1234567890"
                 onChange={(e) => {
                   setTel(e.target.value);
                 }}
@@ -428,7 +380,8 @@ export default function Register() {
 
         <div>
           <button
-            className="bg-indigo-500 text-white py-3 rounded-md w-full font-semibold active:scale-75"
+            className="bg-indigo-500 text-white py-3 rounded-md w-full font-semibold active:scale-75
+            transition-all hover:bg-indigo-600"
             onClick={register}
           >
             REGISTER

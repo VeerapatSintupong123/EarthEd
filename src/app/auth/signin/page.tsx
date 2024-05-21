@@ -89,7 +89,8 @@ export default function SignIn() {
         </div>
         <button
           onClick={submit}
-          className="bg-indigo-500 text-white py-3 rounded-md w-full font-semibold active:scale-75"
+          className="bg-indigo-500 text-white py-3 rounded-md w-full font-semibold active:scale-75
+          transition-all hover:bg-indigo-600"
         >
           LOGIN
         </button>

@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { Course } from "../../../../interface";
 import Swal from "sweetalert2";
 import dynamic from "next/dynamic";
-import Link from "next/link";
-const DynamicVideo = dynamic(() => import("@/components/video"), {
+
+const DynamicVideo = dynamic(() => import("@/components/learnPlay"), {
   ssr: false,
 });
 
@@ -65,7 +65,7 @@ export default function LearnId({ params }: { params: { id: string } }) {
       </h1>
       <small className="-mt-5 mb-6 text-lg">{course?.title}</small>
       <div
-        className="z-10 px-7 py-5 shadow border border-gray-300 space-y-10 bg-white rounded-xl flex flex-col w-11/12 sm:w-4/5 md:w-4/6 lg:w-4/5 xl:w-2/3"
+        className="z-10 px-7 py-5 shadow border border-gray-300 space-y-10 bg-white rounded-xl flex flex-col w-full 2xl:w-11/12"
         style={{ boxShadow: "rgb(38, 57, 77) 0px 20px 30px -10px" }}
       >
         <div className="flex flex-col items-center -mb-4">
@@ -75,19 +75,9 @@ export default function LearnId({ params }: { params: { id: string } }) {
           </small>
           <hr className="w-4/5 h-1 bg-black mt-2 rounded-xl" />
         </div>
-        {session ? (
+        <div className="flex flex-col gap-y-4">
           <DynamicVideo url={course?.video as string} />
-        ) : (
-          <div className="flex flex-col items-center gap-y-3">
-            <h1>Hello, Please log in to access your courses.</h1>
-            <Link
-              href="/api/auth/signin/"
-              className="bg-blue-500 px-9 py-3 rounded-xl text-white active:scale-75 transition-all hover:bg-blue-600"
-            >
-              Back to login
-            </Link>
-          </div>
-        )}
+        </div>
       </div>
     </main>
   );

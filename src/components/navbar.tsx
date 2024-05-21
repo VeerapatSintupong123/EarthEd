@@ -24,6 +24,7 @@ const logOut = () => {
 export default function NavBar() {
   const { data: session } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const role = session?.user.role;
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -44,9 +45,21 @@ export default function NavBar() {
       >
         <ul className="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8 ml-[60px]">
           <li className=" rounded-xl">
-            <Link className="hover:text-gray-500 hover:underline" href="#">
-              Profile
-            </Link>
+            {role === "user" ? (
+              <Link
+                className="hover:text-gray-500 hover:underline"
+                href="/profile"
+              >
+                Profile
+              </Link>
+            ) : (
+              <Link
+                className="hover:text-gray-500 hover:underline"
+                href="/admin"
+              >
+                Admin
+              </Link>
+            )}
           </li>
           <li>
             <Link
@@ -62,7 +75,10 @@ export default function NavBar() {
             </Link>
           </li>
           <li>
-            <Link className="hover:text-gray-500 hover:underline" href="#">
+            <Link
+              className="hover:text-gray-500 hover:underline"
+              href="/practice"
+            >
               Practice
             </Link>
           </li>

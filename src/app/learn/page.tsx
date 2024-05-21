@@ -3,12 +3,13 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import CourseCard from "@/components/courseCard";
 import { Course } from "../../../interface";
-import Link from "next/link";
+import { CircularProgress } from "@mui/material";
 import Swal from "sweetalert2";
 
 export default function Learn() {
   const [courses, setCourses] = useState<Course[]>([]);
   const { data: session } = useSession();
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const token = session?.user.token;
@@ -44,6 +45,8 @@ export default function Learn() {
         }).then(() => {
           window.location.href = "/";
         });
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -69,7 +72,11 @@ export default function Learn() {
         </div>
 
         <div className="flex flex-col items-center gap-y-3">
-          {session ? (
+          {loading ? (
+            <div className="mt-5">
+              <CircularProgress />
+            </div>
+          ) : (
             <div className="grid grid-cols-1 gap-5 w-full md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
               {courses.map((course) => (
                 <CourseCard
@@ -78,21 +85,11 @@ export default function Learn() {
                   subject={course.subject}
                   title={course.title}
                   chapter={course.chapter}
-                  description={course.dicription}
+                  description={course.description}
                   image={course.image}
                 />
               ))}
             </div>
-          ) : (
-            <>
-              <h1>Hello, Please log in to access your courses.</h1>
-              <Link
-                href="/api/auth/signin/"
-                className="bg-blue-500 px-9 py-3 rounded-xl text-white active:scale-75 transition-all hover:bg-blue-600"
-              >
-                Back to login
-              </Link>
-            </>
           )}
         </div>
       </div>

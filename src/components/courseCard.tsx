@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import { DriveURL } from "@/libs/driveURL";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function CourseCard({
   id,
@@ -17,6 +20,9 @@ export default function CourseCard({
   description: string;
   image: string;
 }) {
+  const { data: session } = useSession();
+  const role = session?.user.role;
+
   return (
     <div className="shadow border border-gray-300 bg-white rounded-xl w-full p-5">
       <div className="w-full relative p-24">
@@ -42,13 +48,38 @@ export default function CourseCard({
         <div className="inline-flex items-baseline gap-x-2">
           <h1 className="text-lg">{description}</h1>
         </div>
-        <Link
-          href={`/learn/${id}`}
-          className="w-full bg-emerald-500 p-2 rounded-xl mt-1 text-center 
+        {role === "user" ? (
+          <Link
+            href={`/learn/${id}`}
+            className="w-full bg-emerald-500 p-2 rounded-xl mt-1 text-center 
           text-white hover:bg-emerald-600 active:scale-75 transition-all"
-        >
-          Learn
-        </Link>
+          >
+            Learn
+          </Link>
+        ) : (
+          <>
+            <Link
+              href={`/learn/${id}`}
+              className="w-full bg-emerald-500 p-2 rounded-xl mt-1 text-center 
+        text-white hover:bg-emerald-600 active:scale-75 transition-all"
+            >
+              View
+            </Link>
+            <Link
+              href={`/learn`}
+              className="w-full bg-orange p-2 rounded-xl mt-1 text-center 
+        text-white hover:bg-orangeHover active:scale-75 transition-all"
+            >
+              Update
+            </Link>
+            <button
+              className="bg-red-500 text-white p-2 rounded-xl w-full mt-1
+          active:scale-75 transition-all hover:bg-red-600"
+            >
+              Delete
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
