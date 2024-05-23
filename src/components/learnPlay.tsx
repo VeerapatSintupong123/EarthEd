@@ -10,7 +10,6 @@ import VolumeOff from "@mui/icons-material/VolumeOff";
 import Fullscreen from "@mui/icons-material/Fullscreen";
 import { styled } from "@mui/system";
 import Swal from "sweetalert2";
-import { DriveURL } from "@/libs/driveURL";
 
 const EmeraldSlider = styled(Slider)({
   color: "#50C878",

@@ -45,7 +45,7 @@ export default function NavBar() {
       >
         <ul className="flex md:flex-row flex-col md:items-center md:gap-[4vw] gap-8 ml-[60px]">
           <li className=" rounded-xl">
-            {role === "user" ? (
+            {role !== "admin" ? (
               <Link
                 className="hover:text-gray-500 hover:underline"
                 href="/profile"

@@ -6,7 +6,7 @@ export interface Course {
     description:string;
     image:string;
     video:string;
-    alert:Alert;
+    alert:Array<Alert>;
     __V:string;
 }  
 
@@ -27,6 +27,7 @@ export interface User{
 
 export interface Alert{
     type:string;
+    time:string;
     question:string;
     choice:Array<String>;
     answer:string;

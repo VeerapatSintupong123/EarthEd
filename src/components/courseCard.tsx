@@ -4,6 +4,7 @@ import Image from "next/image";
 import { DriveURL } from "@/libs/driveURL";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Swal from "sweetalert2";
 
 export default function CourseCard({
   id,
@@ -22,6 +23,61 @@ export default function CourseCard({
 }) {
   const { data: session } = useSession();
   const role = session?.user.role;
+
+  const del = async () => {
+    Swal.fire({
+      title: "Delete Chapter",
+      text: "Do you want to delete it?",
+      confirmButtonText: "Yes, I do",
+      cancelButtonText: "No!",
+      showCancelButton: true,
+      icon: "question",
+    }).then(async (res) => {
+      if (res.isConfirmed) {
+        const token = session?.user.token;
+        try {
+          const response = await fetch("/api/course/delete", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id,
+              token,
+            }),
+          });
+
+          if (response.ok) {
+            Swal.fire({
+              title: "Delete Successful",
+              text: "Delete chapter",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 2000,
+            }).then(() => {
+              window.location.href = "/learn";
+            });
+          } else {
+            Swal.fire({
+              title: "Fail to delete",
+              text: "Something went wrong",
+              timer: 2000,
+              icon: "error",
+              showConfirmButton: false,
+            });
+          }
+        } catch (error) {
+          Swal.fire({
+            title: "Fail to delete",
+            text: "Something went wrong",
+            timer: 2000,
+            icon: "error",
+            showConfirmButton: false,
+          });
+        }
+      }
+    });
+  };
 
   return (
     <div className="shadow border border-gray-300 bg-white rounded-xl w-full p-5">
@@ -66,7 +122,7 @@ export default function CourseCard({
               View
             </Link>
             <Link
-              href={`/learn`}
+              href={`/learn/${id}/edit`}
               className="w-full bg-orange p-2 rounded-xl mt-1 text-center 
         text-white hover:bg-orangeHover active:scale-75 transition-all"
             >
@@ -75,6 +131,7 @@ export default function CourseCard({
             <button
               className="bg-red-500 text-white p-2 rounded-xl w-full mt-1
           active:scale-75 transition-all hover:bg-red-600"
+              onClick={del}
             >
               Delete
             </button>

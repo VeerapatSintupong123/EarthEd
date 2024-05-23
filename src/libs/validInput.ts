@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+import { Alert } from "../../interface";
 
 export const ValidAdd = (
     subject:string,title:string,chapter:string,desciption:string,last:string,image:string,video:string )=>{
@@ -121,3 +122,92 @@ export const ValidRegister = (
     }
     return true;
   }
+
+export const ValidAddAlert = (alerts:Array<Alert>,time:string,question:string,type:string,
+  double1:string,double2:string,
+  four1:string,four2:string,four3:string,four4:string,answer:string,reason:string)=>{
+
+  var temp:Alert = {type:"",time:"",question:"",choice:[],answer:"",reason:""};
+
+  if(!time || !type || !question){
+    Swal.fire({
+      title: "Invalid Input",
+      text: "Time, Question or Type",
+      icon: "error",
+      timer: 2000,
+    })
+    return false;
+  }
+
+  let isDuplicateTime = false;
+  alerts.forEach((a) => {
+    if (a.time === time) {
+      isDuplicateTime = true;
+      return;
+    }
+  });
+
+  if (isDuplicateTime) {
+    Swal.fire({
+      title: "Invalid Input",
+      text: "Cannot add alert at the same time",
+      icon: "error",
+      timer: 2000,
+    });
+    return false;
+  }
+
+  temp.type = type;
+  temp.time = time;
+  temp.question = question;
+
+  if(type.match("2MCQ")){
+    if(!double1 || !double2){
+      Swal.fire({
+        title: "Invalid Input",
+        text: "Choice 2MCQ",
+        icon: "error",
+        timer: 2000,
+      })
+      return false;
+    }
+
+    var array:Array<string> = [];
+    array.push(double1,double2);
+    temp.choice = array;
+
+    temp.answer = answer;
+    temp.reason = reason;
+    return temp;
+  }else if(type.match("4MCQ")){
+    if(!four1 || !four2 || !four3 || !four4){
+      Swal.fire({
+        title: "Invalid Input",
+        text: "Choice 4MCQ",
+        icon: "error",
+        timer: 2000,
+      })
+      return false;
+    }
+
+    if(!answer || !reason){
+      Swal.fire({
+        title: "Invalid Input",
+        text: "Answer or Reason",
+        icon: "error",
+        timer: 2000,
+      })
+      return false;
+    }
+
+    var array:Array<string> = [];
+    array.push(four1,four2,four3,four4);
+    temp.choice = array;
+
+    temp.answer = answer;
+    temp.reason = reason;
+    return temp;
+  }
+
+  return temp;
+}
