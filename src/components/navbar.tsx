@@ -21,6 +21,33 @@ const logOut = () => {
   });
 };
 
+async function downloadFile(fileName: string) {
+  try {
+    const response = await fetch(`/api/file/download?file=${fileName}`);
+    if (!response.ok) {
+      throw new Error("File not found");
+    }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    Swal.fire({
+      title: "Download Exam Fail",
+      text: "fail",
+      timer: 2000,
+      showConfirmButton: false,
+      icon: "error",
+    });
+  }
+}
+
 export default function NavBar() {
   const { data: session } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,7 +58,7 @@ export default function NavBar() {
   };
 
   return (
-    <nav className="flex justify-between items-center w-full mx-auto py-2 border-2">
+    <nav className="flex justify-between items-center w-full mx-auto py-2 border-2 bg-white shadow-lg">
       <div className="ml-[10px]">
         <Link href="/">
           <h1 className="font-extrabold text-3xl">EarthEd</h1>
@@ -94,9 +121,21 @@ export default function NavBar() {
         </button>
         {session ? (
           <>
+            {session.user.role === "admin" && (
+              <button
+                onClick={() => {
+                  downloadFile("history.csv");
+                }}
+                className="bg-emerald-500 text-white font-medium py-2 px-4 rounded transition-all 
+                hover:bg-emerald-600 active:scale-75"
+              >
+                History
+              </button>
+            )}
             <button
               onClick={logOut}
-              className="bg-orange text-white font-medium py-2 px-4 rounded transition-all hover:bg-orangeHover active:scale-75"
+              className="bg-orange text-white font-medium py-2 px-4 rounded transition-all 
+              hover:bg-orangeHover active:scale-75"
             >
               Log out
             </button>

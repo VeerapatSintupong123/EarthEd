@@ -1,15 +1,3 @@
-export interface Course {
-    _id: string;
-    subject: string;
-    title:string;
-    chapter:string;
-    description:string;
-    image:string;
-    video:string;
-    alert:Array<Alert>;
-    __V:string;
-}  
-
 export interface User{
     _id: string,
     name: string,
@@ -22,8 +10,20 @@ export interface User{
     schoolName: string,
     schoolProvince: string,
     schoolLevel: string,
-    geography: string,
+    course: Array<CourseStatus>,
 }
+
+export interface Course {
+    _id: string;
+    subject: string;
+    title:string;
+    chapter:string;
+    description:string;
+    image:string;
+    video:string;
+    alert:Array<Alert>;
+    __V:string;
+}  
 
 export interface Alert{
     type:string;
@@ -32,4 +32,21 @@ export interface Alert{
     choice:Array<String>;
     answer:string;
     reason:string;
+}
+
+export interface CourseStatus{
+    subject: string;
+    payment: string;
+    chapter: string;
+    current: string;
+}
+
+export interface CSVRecord {
+    question: string;
+    q1: string;
+    q2: string;
+    q3: string;
+    q4: string;
+    answer: string;
+    reason: string;
 }

@@ -13,6 +13,7 @@ export default function CourseCard({
   chapter,
   description,
   image,
+  current,
 }: {
   id: string;
   subject: string;
@@ -20,6 +21,7 @@ export default function CourseCard({
   chapter: string;
   description: string;
   image: string;
+  current: string;
 }) {
   const { data: session } = useSession();
   const role = session?.user.role;
@@ -105,32 +107,58 @@ export default function CourseCard({
           <h1 className="text-lg">{description}</h1>
         </div>
         {role === "user" ? (
-          <Link
-            href={`/learn/${id}`}
-            className="w-full bg-emerald-500 p-2 rounded-xl mt-1 text-center 
-          text-white hover:bg-emerald-600 active:scale-75 transition-all"
-          >
-            Learn
-          </Link>
+          current.includes("pre") ? (
+            <Link
+              href={`/learn/${id}/pre`}
+              className="w-full bg-amber-500 p-2 rounded-xl mt-1 text-center 
+      text-white hover:bg-amber-600 active:scale-75 transition-all"
+            >
+              Pre-Test
+            </Link>
+          ) : current.includes("learn") ? (
+            <Link
+              href={`/learn/${id}`}
+              className="w-full bg-emerald-500 p-2 rounded-xl mt-1 text-center 
+      text-white hover:bg-emerald-600 active:scale-75 transition-all"
+            >
+              Learn
+            </Link>
+          ) : current.includes("post") ? (
+            <Link
+              href={`/learn/${id}/post`}
+              className="w-full bg-rose-500 p-2 rounded-xl mt-1 text-center 
+      text-white hover:bg-rose-600 active:scale-75 transition-all"
+            >
+              Post-Test
+            </Link>
+          ) : current.includes("review") ? (
+            <Link
+              href={`/learn/${id}`}
+              className="w-full bg-blue-500 p-2 rounded-xl mt-1 text-center 
+      text-white hover:bg-blue-600 active:scale-75 transition-all"
+            >
+              Review
+            </Link>
+          ) : null
         ) : (
           <>
             <Link
               href={`/learn/${id}`}
               className="w-full bg-emerald-500 p-2 rounded-xl mt-1 text-center 
-        text-white hover:bg-emerald-600 active:scale-75 transition-all"
+      text-white hover:bg-emerald-600 active:scale-75 transition-all"
             >
               View
             </Link>
             <Link
               href={`/learn/${id}/edit`}
               className="w-full bg-orange p-2 rounded-xl mt-1 text-center 
-        text-white hover:bg-orangeHover active:scale-75 transition-all"
+      text-white hover:bg-orangeHover active:scale-75 transition-all"
             >
               Update
             </Link>
             <button
               className="bg-red-500 text-white p-2 rounded-xl w-full mt-1
-          active:scale-75 transition-all hover:bg-red-600"
+      active:scale-75 transition-all hover:bg-red-600"
               onClick={del}
             >
               Delete

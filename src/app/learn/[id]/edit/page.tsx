@@ -2,9 +2,11 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Swal from "sweetalert2";
-import { Alert, Course } from "../../../../../interface";
+import { Alert, CSVRecord, Course } from "../../../../../interface";
 import { CircularProgress } from "@mui/material";
 import EditAlert from "@/components/editAlert";
+import ExamFile from "@/components/uploadFile";
+import { getExamfile } from "@/libs/getfile";
 
 export default function LearnEdit() {
   const [id, setId] = useState("");
@@ -18,6 +20,9 @@ export default function LearnEdit() {
 
   const [menu, setMenu] = useState(1);
   const [alerts, setAlerts] = useState<Array<Alert>>([]);
+
+  const [examFile, setExamFile] = useState("");
+  const [exam, setExam] = useState<Array<CSVRecord>>([]);
 
   const { data: session } = useSession();
   const role = session?.user?.role;
@@ -74,8 +79,6 @@ export default function LearnEdit() {
         }).then(() => {
           window.location.href = "/";
         });
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -83,6 +86,41 @@ export default function LearnEdit() {
       fetchCourse();
     }
   }, [session, role]);
+
+  useEffect(() => {
+    const checkFile = async () => {
+      try {
+        const response = await fetch(
+          `/api/file/check?file=${course?.subject}_${course?.chapter}.csv`
+        );
+        const result = await response.json();
+        if (response.ok && result.status === "success") {
+          setExamFile(`${course?.subject}_${course?.chapter}.csv`);
+        } else {
+          setExamFile(`No exam`);
+        }
+      } catch (error) {
+        Swal.fire({
+          title: "Something went wrong",
+          text: "Fail to fetch exam",
+          timer: 2000,
+          showConfirmButton: false,
+          icon: "error",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkFile();
+
+    if (course) {
+      const cs = course.subject as string;
+      const cc = course.chapter as string;
+      const fileName = `${cs}_${cc}.csv`;
+      getExamfile(fileName).then((res: Array<CSVRecord>) => setExam(res));
+    }
+  }, [course]);
 
   const update = async () => {
     if (!title || !description || !image || !video) {
@@ -289,7 +327,32 @@ export default function LearnEdit() {
                 token={session?.user.token as string}
               />
             </div>
-            <div className={`${getTranClass(3)}`}></div>
+            <div className={`${getTranClass(3)}`}>
+              <h1 className="text-center font-semibold">Status: {examFile}</h1>
+              <ExamFile chapter={examFile} />
+              {exam.map((question, index) => (
+                <div
+                  key={index}
+                  className="my-4 p-4 border rounded-md bg-gray-100"
+                >
+                  <h2 className="text-xl font-semibold mb-2">
+                    {question.question}
+                  </h2>
+                  <ul className="list-disc list-inside">
+                    <li>{question.q1}</li>
+                    <li>{question.q2}</li>
+                    <li>{question.q3}</li>
+                    <li>{question.q4}</li>
+                  </ul>
+                  <p className="mt-2 text-green-600">
+                    <strong>Answer:</strong> {question.answer}
+                  </p>
+                  <p className="mt-1 text-gray-600">
+                    <strong>Reason:</strong> {question.reason}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

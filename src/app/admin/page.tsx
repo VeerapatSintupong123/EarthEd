@@ -7,6 +7,7 @@ import { Course } from "../../../interface";
 import { CircularProgress } from "@mui/material";
 import { ValidAdd } from "@/libs/validInput";
 import AddAlert from "@/components/addAlert";
+import ExamFile from "@/components/uploadFile";
 
 export default function Admin() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -315,7 +316,9 @@ export default function Admin() {
           <div className={`${tranClass(2)}`}>
             <AddAlert courses={courses} token={session?.user.token as string} />
           </div>
-          <div className={`${tranClass(3)}`}></div>
+          <div className={`${tranClass(3)}`}>
+            <ExamFile chapter="example" />
+          </div>
         </div>
       </div>
     </main>

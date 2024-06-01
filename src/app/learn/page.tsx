@@ -1,15 +1,19 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import CourseCard from "@/components/courseCard";
-import { Course } from "../../../interface";
+import { Course, CourseStatus } from "../../../interface";
 import { CircularProgress } from "@mui/material";
 import Swal from "sweetalert2";
+import { getMe } from "@/libs/me";
+import Link from "next/link";
 
 export default function Learn() {
   const [courses, setCourses] = useState<Course[]>([]);
   const { data: session } = useSession();
   const [loading, setLoading] = useState<boolean>(true);
+  const [courseStatus, setCourseStatus] = useState<CourseStatus>();
 
   useEffect(() => {
     const token = session?.user.token;
@@ -24,7 +28,7 @@ export default function Learn() {
 
         if (!response.ok) {
           Swal.fire({
-            title: "Fetch Faild",
+            title: "Fetch Failed",
             icon: "error",
             timer: 2000,
             showConfirmButton: false,
@@ -38,7 +42,7 @@ export default function Learn() {
         setCourses(data.data);
       } catch (error) {
         Swal.fire({
-          title: "Fetch Faild",
+          title: "Fetch Failed",
           icon: "error",
           timer: 2000,
           showConfirmButton: false,
@@ -52,6 +56,7 @@ export default function Learn() {
 
     if (token) {
       fetchData();
+      getMe(token).then((res) => setCourseStatus(res));
     }
   }, [session]);
 
@@ -76,19 +81,55 @@ export default function Learn() {
             <div className="mt-5">
               <CircularProgress />
             </div>
-          ) : (
+          ) : courseStatus ? (
             <div className="grid grid-cols-1 gap-5 w-full md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-              {courses.map((course) => (
-                <CourseCard
-                  key={course._id}
-                  id={course._id}
-                  subject={course.subject}
-                  title={course.title}
-                  chapter={course.chapter}
-                  description={course.description}
-                  image={course.image}
-                />
-              ))}
+              {session?.user.role === "user" &&
+                courses.map((course, index) => {
+                  const isCurrentCourse =
+                    index === parseInt(courseStatus.chapter) - 1;
+                  const isCompletedCourse =
+                    index <= parseInt(courseStatus.chapter) - 1;
+
+                  return isCompletedCourse ? (
+                    <CourseCard
+                      key={course._id}
+                      id={course._id}
+                      subject={course.subject}
+                      title={course.title}
+                      chapter={course.chapter}
+                      description={course.description}
+                      image={course.image}
+                      current={
+                        isCurrentCourse ? courseStatus.current : "review"
+                      }
+                    />
+                  ) : null;
+                })}
+
+              {session?.user.role === "admin" &&
+                courses.map((course) => (
+                  <CourseCard
+                    key={course._id}
+                    id={course._id}
+                    subject={course.subject}
+                    title={course.title}
+                    chapter={course.chapter}
+                    description={course.description}
+                    image={course.image}
+                    current=""
+                  />
+                ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-3">
+              <h1 className="font-semibold text-xl">Ready to begin?</h1>
+              <h1>
+                Visit the{" "}
+                <Link href="/course" className="font-bold">
+                  Course
+                </Link>{" "}
+                section to explore our offerings!
+              </h1>
             </div>
           )}
         </div>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { User } from "../../../interface";
+import { CourseStatus, User } from "../../../interface";
 import Swal from "sweetalert2";
 import { CircularProgress } from "@mui/material";
 
@@ -16,6 +16,7 @@ export default function Profile() {
   const [fullName, setFullName] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
+  const [courseStatus, setCourseStatus] = useState<Array<CourseStatus>>([]);
 
   const { data: session } = useSession();
   const [loading, setLoading] = useState<boolean>(true);
@@ -43,6 +44,7 @@ export default function Profile() {
           setSchoolName(data.schoolName);
           setSchoolProvince(data.schoolProvince);
           setSchoolLevel(data.schoolLevel);
+          setCourseStatus(data.course);
         } else {
           Swal.fire({
             title: "Fetch Fail",
@@ -124,6 +126,7 @@ export default function Profile() {
           schoolProvince: schoolProvince,
           schoolLevel: schoolLevel,
           token: token,
+          course: courseStatus,
           id: id,
         }),
       });
@@ -157,7 +160,7 @@ export default function Profile() {
   };
 
   return (
-    <main className="flex flex-col items-center min-h-[100vh] p-3 overflow-hidden bg-slate-200">
+    <main className="flex flex-col items-center p-3 overflow-hidden">
       <h1 className="text-3xl font-semibold mb-6 mt-5">Profile</h1>
       <small className="-mt-5 mb-6 text-lg">Hello! Geophilic</small>
       <div

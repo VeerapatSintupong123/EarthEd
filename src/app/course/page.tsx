@@ -2,12 +2,16 @@
 
 import React from "react";
 import dynamic from "next/dynamic";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 const DynamicVideo = dynamic(() => import("@/components/video"), {
   ssr: false,
 });
 
 export default function Course() {
+  const { data: session } = useSession();
+
   return (
     <main className="flex flex-col items-center min-h-screen p-3 bg-slate-200 overflow-hidden">
       <h1 className="text-3xl font-semibold mb-6 mt-5">Geography</h1>
@@ -57,10 +61,18 @@ export default function Course() {
               collecting, analyzing, and interpreting geographical data.
             </li>
           </ul>
-          <button className="mt-6 px-9 py-3 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 transition duration-300 active:scale-75">
-            Enroll Now
-          </button>
         </div>
+        {session && (
+          <div className="flex flex-col items-center">
+            <Link
+              href="/payment"
+              className="px-9 py-3 bg-emerald-500 text-white rounded-xl 
+          hover:bg-emerald-600 transition duration-300 active:scale-75 w-1/6 text-center"
+            >
+              Buy Now
+            </Link>
+          </div>
+        )}
       </div>
     </main>
   );

@@ -1,3 +1,5 @@
+import { CourseStatus } from "../../interface";
+
 export default async function UpdateUser(
   fullName: string,
   gender: string,
@@ -5,6 +7,7 @@ export default async function UpdateUser(
   schoolName: string,
   schoolProvince: string,
   schoolLevel: string,
+  course: Array<CourseStatus>,
   token: string,
   id: string
 ) {
@@ -21,6 +24,7 @@ export default async function UpdateUser(
       schoolName: schoolName,
       schoolProvince: schoolProvince,
       schoolLevel: schoolLevel,
+      course: course,
     }),
   });
 

@@ -163,7 +163,7 @@ export default function AddAlert({
         </label>
         <input
           id="time"
-          placeholder="Time Stamp"
+          placeholder="00:00"
           className="text-xl text-black font-semibold placeholder:text-xl border-2 
               focus:outline-none py-2 px-5 border-gray-300 rounded-md focus:border-blue-500
               w-1/4"

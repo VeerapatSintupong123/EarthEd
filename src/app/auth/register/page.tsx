@@ -21,6 +21,7 @@ export default function Register() {
   const [schoolName, setschoolName] = useState("");
   const [schoolProvince, setSchoolProvince] = useState("");
   const [schoolLevel, setSchoolLevel] = useState("");
+  const [policy, setPolicy] = useState("");
   const code = Math.floor(100000 + Math.random() * 900000).toString();
 
   const [menu, setMenu] = useState<number>(1);
@@ -46,6 +47,16 @@ export default function Register() {
       )
     )
       return;
+
+    if (!policy.match("Policy")) {
+      Swal.fire({
+        title: "Privacy Policy",
+        text: "Please read and agree Privacy Policy",
+        icon: "error",
+        timer: 2000,
+      });
+      return;
+    }
 
     emailjs.init(process.env.EMAILJS_ID as string);
     try {
@@ -170,7 +181,7 @@ export default function Register() {
           </div>
         </div>
 
-        <div className={`${tranMain}`}>
+        <div className={`${tranMain} space-y-3`}>
           <div className="flex flex-col space-y-3 w-full ">
             <label htmlFor="email" className="font-bold text-xl">
               Email
@@ -378,7 +389,36 @@ export default function Register() {
           </small>
         </div>
 
-        <div>
+        <div className="flex flex-col items-center gap-y-2">
+          <div>
+            <input
+              type="checkbox"
+              name="Policy"
+              id="policy"
+              onClick={() => {
+                setPolicy("Policy");
+              }}
+            />
+            <label htmlFor="Policy" className="ml-3">
+              I read and agree to Privacy Policy{" "}
+              <Link
+                className="text-blue-600"
+                href={
+                  "https://pdpa.pro/policies/view/th/FGVfSKJr97MT7Sg25Tiw1S4n"
+                }
+              >
+                Thai{" "}
+              </Link>
+              <Link
+                className="text-orange"
+                href={
+                  "https://pdpa.pro/policies/view/en/FGVfSKJr97MT7Sg25Tiw1S4n"
+                }
+              >
+                Eng
+              </Link>
+            </label>
+          </div>
           <button
             className="bg-indigo-500 text-white py-3 rounded-md w-full font-semibold active:scale-75
             transition-all hover:bg-indigo-600"

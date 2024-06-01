@@ -9,7 +9,7 @@ export default function ClientWrapper({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const noMenuRoutes = ["/auth/signin", "/auth/register"];
+  const noMenuRoutes = ["/auth/signin", "/auth/register", "/payment"];
   const showMenu = !noMenuRoutes.includes(pathname);
 
   return (
