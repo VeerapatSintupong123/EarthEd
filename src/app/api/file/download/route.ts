@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'node:fs/promises';
-import path from 'node:path';
+import fs from 'fs/promises';
+import path from 'path';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -10,20 +10,16 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ status: 'fail', error: 'No file specified' }, { status: 400 });
   }
 
-  var filePath = "";
-  if(fileName.match("history.csv")) 
+  let filePath = "";
+  if (fileName.match("history.csv")) {
     filePath = path.join(process.cwd(), 'public/data', fileName);
-  else 
+  } else {
     filePath = path.join(process.cwd(), 'public/exam', fileName);
-  
+  }
 
   try {
-    const fileExists = await fs.access(filePath).then(() => true).catch(() => false);
+    await fs.access(filePath);
     
-    if (!fileExists) {
-      return NextResponse.json({ status: 'fail', error: 'File not found' }, { status: 404 });
-    }
-
     const fileBuffer = await fs.readFile(filePath);
     
     return new NextResponse(fileBuffer, {
@@ -32,8 +28,8 @@ export async function GET(req: NextRequest) {
         'Content-Disposition': `attachment; filename="${fileName}"`,
       },
     });
-  } catch (e) {
-    return NextResponse.json({ status: 'fail', error: e }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json({ status: 'fail', error: "fail" }, { status: 500 });
   }
 }
 
