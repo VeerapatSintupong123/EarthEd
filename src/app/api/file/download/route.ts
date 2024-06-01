@@ -33,9 +33,3 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ status: 'fail', error: 'Internal Server Error' }, { status: 500 });
   }
 }
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
