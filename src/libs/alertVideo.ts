@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 import { Alert } from "../../interface";
 
 
-export const Answering = (alert: Alert,email:string,subject:string, resumeVideo: () => void) => {
+export const Answering = (alert: Alert,email:string,subject:string,Sub:string, resumeVideo: () => void) => {
   Swal.fire({
     icon: "info",
     title: `${alert.type} Question`,
@@ -21,13 +21,13 @@ export const Answering = (alert: Alert,email:string,subject:string, resumeVideo:
     },
   }).then((result) => {
     if (result.isConfirmed) {
-      saveAnswer(alert,result.value,email,subject);
+      saveAnswer(alert,result.value,email,subject,Sub);
       resumeVideo();
     }
   });
 };
 
-export const Two_MCQ_Answer = (alert: Alert,email:string,subject:string, resumeVideo: () => void) => {
+export const Two_MCQ_Answer = (alert: Alert,email:string,subject:string,Sub:string, resumeVideo: () => void) => {
   Swal.fire({
     icon: "info",
     title: `${alert.type} Question`,
@@ -49,7 +49,7 @@ export const Two_MCQ_Answer = (alert: Alert,email:string,subject:string, resumeV
     },
   }).then((result) => {
     if (result.isConfirmed) {
-        saveAnswer(alert,result.value,email,subject);
+        saveAnswer(alert,result.value,email,subject,Sub);
       if (result.value === alert.answer) {
         Swal.fire("Correct!", "Your answer is correct.", "success").then(()=>{
             resumeVideo();
@@ -63,7 +63,7 @@ export const Two_MCQ_Answer = (alert: Alert,email:string,subject:string, resumeV
   });
 };
 
-export const Two_MCQ_NoAnswer = (alert: Alert,email:string,subject:string, resumeVideo: () => void) => {
+export const Two_MCQ_NoAnswer = (alert: Alert,email:string,subject:string,Sub:string, resumeVideo: () => void) => {
     Swal.fire({
       icon: "info",
       title: `${alert.type} Question`,
@@ -85,13 +85,13 @@ export const Two_MCQ_NoAnswer = (alert: Alert,email:string,subject:string, resum
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        saveAnswer(alert,result.value,email,subject);
+        saveAnswer(alert,result.value,email,subject,Sub);
         resumeVideo();
       }
     });
   };
 
-export const Four_MCQ = (alert: Alert,email:string,subject:string, resumeVideo: () => void) => {
+export const Four_MCQ = (alert: Alert,email:string,subject:string,Sub:string, resumeVideo: () => void) => {
   Swal.fire({
     icon: "info",
     title: `${alert.type} Question`,
@@ -115,7 +115,7 @@ export const Four_MCQ = (alert: Alert,email:string,subject:string, resumeVideo: 
     },
   }).then((result) => {
     if (result.isConfirmed) {
-        saveAnswer(alert,result.value,email,subject);
+        saveAnswer(alert,result.value,email,subject,Sub);
       if (result.value === alert.answer) {
         Swal.fire("Correct!", "Your answer is correct.", "success").then(()=>{
             resumeVideo();
@@ -135,9 +135,9 @@ const getDateNow =()=>{
     return date;
 };
 
-const saveAnswer = async (alert: Alert, userAnswer: string, email:string, subject:string) => {
-
-    const data = `\n${getDateNow()},${subject},${alert.type},${alert.question},${alert.answer},${email},${userAnswer}`
+const saveAnswer = async (alert: Alert, userAnswer: string, email:string, subject:string, Sub:string) => {
+    const data = `\n${getDateNow()},${subject},${Sub},,,
+    ${alert.type},${alert.question},${alert.answer},${email},${userAnswer}`
 
     try {
         const response = await fetch("/api/file/saveData",{

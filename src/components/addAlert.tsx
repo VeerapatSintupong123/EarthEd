@@ -2,6 +2,7 @@ import { ValidAddAlert } from "@/libs/validInput";
 import { Alert, Course } from "../../interface";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import SelectUnitsGeo from "./selectUnitsGeo";
 
 export default function AddAlert({
   courses,
@@ -11,6 +12,11 @@ export default function AddAlert({
   token: string;
 }) {
   const [chapters, setChapters] = useState<Array<string>>([]);
+
+  const [subject, setSunject] = useState("");
+  const [sub, setSub] = useState("");
+  const [unit, setUnit] = useState("");
+
   const [id, setId] = useState<string>("");
   const [alerts, setAlerts] = useState<Array<Alert>>([]);
 
@@ -104,7 +110,7 @@ export default function AddAlert({
 
   return (
     <div className="flex flex-col gap-y-3 items-center">
-      {/* Subject and Chapter */}
+      {/* Subject and Sub */}
       <div className="w-full flex flex-row justify-center items-center gap-x-3">
         <label htmlFor="subject" className="font-bold text-xl">
           Subject
@@ -115,12 +121,7 @@ export default function AddAlert({
           focus:outline-none py-2 px-5 border-gray-300 rounded-md focus:border-blue-500"
           onChange={(e) => {
             const subject = e.target.value;
-            var temp: Array<string> = [];
-            courses.forEach((course) => {
-              if (course.subject.match(subject)) temp.push(course.chapter);
-            });
-            temp.sort();
-            setChapters(temp);
+            setSunject(subject);
           }}
         >
           <option value="" disabled selected>
@@ -128,26 +129,96 @@ export default function AddAlert({
           </option>
           <option value="Geography">Geography</option>
         </select>
-        <label htmlFor="chapter" className="font-bold text-xl">
+        <label htmlFor="sub" className="font-bold text-xl">
+          Sub
+        </label>
+        <select
+          id="sub"
+          className="text-xl text-black font-semibold placeholder:text-xl border-2 
+                focus:outline-none py-2 px-5 border-gray-300 rounded-md focus:border-blue-500"
+          onChange={(event) => {
+            const selectedSub = event.target.value;
+            setSub(selectedSub);
+          }}
+        >
+          {subject.match("Geography") ? (
+            <>
+              <option value="" disabled selected>
+                Select Sub
+              </option>
+              <option value="Human geography">Human geography</option>
+              <option value="Physical geography">Physical geography</option>
+              <option value="Geography Techniques">Geography Techniques</option>
+            </>
+          ) : (
+            <>
+              <option value="" disabled selected>
+                Select Sub
+              </option>
+            </>
+          )}
+        </select>
+      </div>
+
+      <div className="w-full flex flex-row justify-center items-center gap-x-3">
+        <label htmlFor="subject" className="font-bold text-xl">
+          Unit
+        </label>
+        <select
+          id="unit"
+          className="text-xl text-black font-semibold placeholder:text-xl border-2 
+                  focus:outline-none py-2 px-5 border-gray-300 rounded-md focus:border-blue-500"
+          onChange={(event) => {
+            const selectedUnit = event.target.value;
+            var array: string[] = [];
+            courses.forEach((course) => {
+              if (
+                course.subject.match(subject) &&
+                course.subsubject.match(sub) &&
+                course.unit.match(selectedUnit)
+              )
+                array.push(course.chapter);
+            });
+            setUnit(selectedUnit);
+            setChapters(array);
+          }}
+        >
+          {subject.match("Geography") ? (
+            <SelectUnitsGeo sub={sub} />
+          ) : (
+            <>
+              <option value="" disabled selected>
+                Select Unit
+              </option>
+            </>
+          )}
+        </select>
+      </div>
+
+      <div className="w-full flex flex-row justify-center items-center gap-x-3">
+        <label htmlFor="subject" className="font-bold text-xl">
           Chapter
         </label>
         <select
-          id="chapter"
+          id="subject"
           className="text-xl text-black font-semibold placeholder:text-xl border-2 
-          focus:outline-none py-2 px-5 border-gray-300 rounded-md focus:border-blue-500"
-          onChange={(e) => {
-            const chapter = e.target.value;
+                focus:outline-none py-2 px-5 border-gray-300 rounded-md focus:border-blue-500"
+          onChange={(event) => {
+            const selectedChapter = event.target.value;
             courses.forEach((course) => {
-              if (course.chapter.match(chapter)) {
-                setAlerts(course.alert);
+              if (
+                course.subject.match(subject) &&
+                course.subsubject.match(sub) &&
+                course.unit.match(unit) &&
+                course.chapter.match(selectedChapter)
+              ) {
                 setId(course._id);
+                setAlerts(course.alert);
               }
             });
           }}
         >
-          <option value="" disabled selected>
-            Select Chapter
-          </option>
+          <option value="">Select a chapter</option>
           {chapters.map((chapter, index) => (
             <option key={index} value={chapter}>
               {chapter}

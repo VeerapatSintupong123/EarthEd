@@ -28,8 +28,15 @@ export default function Course() {
           <hr className="w-4/5 h-1 bg-black mt-2 rounded-xl" />
         </div>
         <DynamicVideo url="https://www.youtube.com/watch?v=LXb3EKWsInQ" />
+
         <div className="space-y-4 text-center">
           <h2 className="text-2xl font-semibold">Course Overview</h2>
+          <div className="flex flex-row gap-x-2 justify-center">
+            <h1>If video has problem</h1>
+            <Link href={"/course"} className="text-red-500">
+              Click!
+            </Link>
+          </div>
           <p>
             The "Geography" course offers an in-depth exploration of Earth's
             physical features, environments, and the dynamic relationships

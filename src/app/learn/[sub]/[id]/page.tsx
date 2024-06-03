@@ -1,7 +1,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { Alert, Course, CourseStatus } from "../../../../interface";
+import { Alert, Course, CourseStatus } from "../../../../../interface";
 import Swal from "sweetalert2";
 import dynamic from "next/dynamic";
 import { getMe } from "@/libs/me";
@@ -17,6 +17,18 @@ export default function LearnId({ params }: { params: { id: string } }) {
   const [courseStatus, setCourseStatus] = useState<CourseStatus>();
   const [review, setReview] = useState(false);
   const [finish, setFinish] = useState(false);
+
+  let sub = "";
+  if (typeof window !== "undefined") {
+    const urlParts = window.location.href.split("/");
+    sub = urlParts.length > 4 ? decodeURIComponent(urlParts[4]) : "";
+  }
+  const Sub = sub;
+
+  let subIndex = 0;
+  if (Sub.match("Human geography")) subIndex = 0;
+  if (Sub.match("Physical geography")) subIndex = 1;
+  if (Sub.match("Geography Techniques")) subIndex = 2;
 
   useEffect(() => {
     const token = session?.user.token;
@@ -68,9 +80,9 @@ export default function LearnId({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     if (course && courseStatus) {
-      const chapterUser = parseInt(courseStatus.chapter as string);
-      const chapterNow = parseInt(course.chapter as string);
-      const current = (courseStatus.current as string) ?? "";
+      const chapterUser = parseInt(courseStatus.chapter[subIndex] as string);
+      const chapterNow = parseInt(course.chapter[subIndex] as string);
+      const current = (courseStatus.current[subIndex] as string) ?? "";
 
       if (!isNaN(chapterUser) && !isNaN(chapterNow)) {
         if (chapterNow !== chapterUser || !current.match("learn")) {
@@ -93,7 +105,8 @@ export default function LearnId({ params }: { params: { id: string } }) {
   }, [course, courseStatus]);
 
   const updateUser = async () => {
-    const updatedStatus = { ...courseStatus, current: "post" };
+    if (courseStatus?.current) courseStatus.current[subIndex] = "post";
+    const updatedStatus = { ...courseStatus, current: courseStatus?.current };
 
     const token = session?.user.token;
     const id = session?.user._id;
@@ -122,10 +135,10 @@ export default function LearnId({ params }: { params: { id: string } }) {
 
   return (
     <main className="flex flex-col items-center min-h-screen p-3 bg-slate-200 overflow-hidden">
-      <h1 className="text-3xl font-semibold mb-6 mt-5">
-        {course?.subject} ,{course?.chapter}
-      </h1>
-      <small className="-mt-5 mb-6 text-lg">{course?.title}</small>
+      <h1 className="text-3xl font-semibold mb-6 mt-5">{course?.unit}</h1>
+      <small className="-mt-5 mb-6 text-lg">
+        {course?.title} ch. {course?.chapter}
+      </small>
       <div
         className="z-10 px-7 py-5 shadow border border-gray-300 space-y-10 bg-white rounded-xl flex flex-col w-full 2xl:w-11/12"
         style={{ boxShadow: "rgb(38, 57, 77) 0px 20px 30px -10px" }}

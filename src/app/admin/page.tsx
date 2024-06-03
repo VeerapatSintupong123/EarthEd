@@ -8,10 +8,13 @@ import { CircularProgress } from "@mui/material";
 import { ValidAdd } from "@/libs/validInput";
 import AddAlert from "@/components/addAlert";
 import ExamFile from "@/components/uploadFile";
+import SelectUnitsGeo from "@/components/selectUnitsGeo";
 
 export default function Admin() {
   const [loading, setLoading] = useState<boolean>(true);
   const [subject, setSubject] = useState("");
+  const [sub, setSub] = useState("");
+  const [unit, setUnit] = useState("");
   const [title, setTitle] = useState("");
   const [chapter, setChapter] = useState("");
   const [description, setDescription] = useState("");
@@ -75,7 +78,19 @@ export default function Admin() {
 
   const add = async () => {
     const token = session?.user.token;
-    if (ValidAdd(subject, title, chapter, description, last, image, video)) {
+    if (
+      ValidAdd(
+        subject,
+        sub,
+        unit,
+        title,
+        chapter,
+        description,
+        last,
+        image,
+        video
+      )
+    ) {
       try {
         const response = await fetch("/api/course/add", {
           method: "POST",
@@ -84,6 +99,8 @@ export default function Admin() {
           },
           body: JSON.stringify({
             subject,
+            sub,
+            unit,
             title,
             chapter,
             description,
@@ -199,16 +216,6 @@ export default function Admin() {
                 focus:outline-none py-2 px-5 border-gray-300 rounded-md focus:border-blue-500"
                   onChange={(event) => {
                     const selectedSubject = event.target.value;
-                    let maxChapter = 0;
-                    courses.forEach((course) => {
-                      if (
-                        course.subject === selectedSubject &&
-                        parseInt(course.chapter) > maxChapter
-                      ) {
-                        maxChapter = parseInt(course.chapter);
-                      }
-                    });
-                    setLast(maxChapter.toString());
                     setSubject(selectedSubject);
                   }}
                 >
@@ -217,11 +224,85 @@ export default function Admin() {
                   </option>
                   <option value="Geography">Geography</option>
                 </select>
-                <label htmlFor="lastChapter" className="font-bold text-xl">
+              </div>
+
+              <div className="w-full flex flex-row justify-center items-center gap-x-3">
+                <label htmlFor="subject" className="font-bold text-xl">
+                  Sub
+                </label>
+                <select
+                  id="sub-subject"
+                  className="text-xl text-black font-semibold placeholder:text-xl border-2 
+                focus:outline-none py-2 px-5 border-gray-300 rounded-md focus:border-blue-500"
+                  onChange={(event) => {
+                    const selectedSub = event.target.value;
+                    let cnt = 0;
+                    courses.forEach((course) => {
+                      if (
+                        course.subsubject.match(selectedSub) &&
+                        parseInt(course.chapter) > cnt
+                      )
+                        cnt = parseInt(course.chapter);
+                    });
+                    setLast(cnt.toString());
+                    setSub(selectedSub);
+                  }}
+                >
+                  {subject.match("Geography") ? (
+                    <>
+                      <option value="" disabled selected>
+                        Select Sub
+                      </option>
+                      <option value="Human geography">Human geography</option>
+                      <option value="Physical geography">
+                        Physical geography
+                      </option>
+                      <option value="Geography Techniques">
+                        Geography Techniques
+                      </option>
+                    </>
+                  ) : (
+                    <>
+                      <option value="" disabled selected>
+                        Select Sub
+                      </option>
+                    </>
+                  )}
+                </select>
+              </div>
+
+              <div className="w-full flex flex-row justify-center items-center gap-x-3">
+                <label htmlFor="subject" className="font-bold text-xl">
+                  Unit
+                </label>
+                <select
+                  id="unit"
+                  className="text-xl text-black font-semibold placeholder:text-xl border-2 
+                  focus:outline-none py-2 px-5 border-gray-300 rounded-md focus:border-blue-500"
+                  onChange={(event) => {
+                    const selectedUnit = event.target.value;
+                    setUnit(selectedUnit);
+                  }}
+                >
+                  {subject.match("Geography") ? (
+                    <SelectUnitsGeo sub={sub} />
+                  ) : (
+                    <>
+                      <option value="" disabled selected>
+                        Select Unit
+                      </option>
+                    </>
+                  )}
+                </select>
+              </div>
+
+              <div className="w-full flex flex-row justify-center items-center gap-x-3">
+                <label htmlFor="lastChapter" className="font-bold text-xl ">
                   Last Chapter:
                 </label>
-                <h1 className="font-semibold text-xl">{last}</h1>
+                <h1 className="font-semibold text-xl ">{last}</h1>
               </div>
+
               <div className="w-full flex flex-row justify-center items-center gap-x-3">
                 <label htmlFor="title" className="font-bold text-xl">
                   Title
@@ -238,6 +319,7 @@ export default function Admin() {
                   }}
                 />
               </div>
+
               <div className="w-full flex flex-row justify-center items-center gap-x-3">
                 <label htmlFor="chapter" className="font-bold text-xl">
                   Chapter
@@ -254,6 +336,7 @@ export default function Admin() {
                   }}
                 />
               </div>
+
               <div className="w-full flex flex-row justify-center items-center gap-x-3">
                 <label htmlFor="description" className="font-bold text-xl">
                   Description
@@ -270,6 +353,7 @@ export default function Admin() {
                   }}
                 />
               </div>
+
               <div className="w-full flex flex-row justify-center items-center gap-x-3">
                 <label htmlFor="imageUrl" className="font-bold text-xl">
                   Image URL
@@ -286,6 +370,7 @@ export default function Admin() {
                   }}
                 />
               </div>
+
               <div className="w-full flex flex-row justify-center items-center gap-x-3">
                 <label htmlFor="videoUrl" className="font-bold text-xl">
                   Video URL

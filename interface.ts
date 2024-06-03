@@ -16,6 +16,8 @@ export interface User{
 export interface Course {
     _id: string;
     subject: string;
+    subsubject: string;
+    unit: string;
     title:string;
     chapter:string;
     description:string;
@@ -37,8 +39,8 @@ export interface Alert{
 export interface CourseStatus{
     subject: string;
     payment: string;
-    chapter: string;
-    current: string;
+    chapter: Array<string>;
+    current: Array<string>;
 }
 
 export interface CSVRecord {
@@ -49,4 +51,5 @@ export interface CSVRecord {
     q4: string;
     answer: string;
     reason: string;
+    image: string;
 }

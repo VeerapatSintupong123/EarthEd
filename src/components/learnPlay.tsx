@@ -56,6 +56,9 @@ export default function LearnPlay({
 
   const [sortedAlerts, setSortedAlerts] = useState<Alert[]>([]);
 
+  const sub = window.location.href.split("/")[4];
+  const Sub = decodeURIComponent(sub);
+
   useEffect(() => {
     if (alerts.length > 0) {
       const sorted = [...alerts].sort((a, b) => {
@@ -108,7 +111,7 @@ export default function LearnPlay({
 
       switch (sortedAlerts[alertIndex].type) {
         case "Answering":
-          Answering(sortedAlerts[alertIndex], email, subject, resumeVideo);
+          Answering(sortedAlerts[alertIndex], email, subject, Sub, resumeVideo);
           break;
         case "2MCQ":
           if (sortedAlerts[alertIndex].answer)
@@ -116,6 +119,7 @@ export default function LearnPlay({
               sortedAlerts[alertIndex],
               email,
               subject,
+              Sub,
               resumeVideo
             );
           else
@@ -123,11 +127,12 @@ export default function LearnPlay({
               sortedAlerts[alertIndex],
               email,
               subject,
+              Sub,
               resumeVideo
             );
           break;
         case "4MCQ":
-          Four_MCQ(sortedAlerts[alertIndex], email, subject, resumeVideo);
+          Four_MCQ(sortedAlerts[alertIndex], email, subject, Sub, resumeVideo);
           break;
         default:
           console.warn("Unknown alert type");

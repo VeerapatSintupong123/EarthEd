@@ -107,6 +107,9 @@ export default function ExamFile({ chapter }: { chapter: string }) {
         <span className="mb-1 font-semibold text-center">
           Upload a CSV file
         </span>
+        <h1 className="text-red-500 text-center font-semibold">
+          format name: Subject_Sub_Unit_Chapter.csv
+        </h1>
         <input
           type="file"
           name="file"

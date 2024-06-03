@@ -2,60 +2,18 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import CourseCard from "@/components/courseCard";
-import { Course, CourseStatus } from "../../../interface";
-import { CircularProgress } from "@mui/material";
-import Swal from "sweetalert2";
+import { CourseStatus } from "../../../interface";
 import { getMe } from "@/libs/me";
 import Link from "next/link";
+import SubCard from "@/components/subCard";
 
 export default function Learn() {
-  const [courses, setCourses] = useState<Course[]>([]);
   const { data: session } = useSession();
-  const [loading, setLoading] = useState<boolean>(true);
   const [courseStatus, setCourseStatus] = useState<CourseStatus>();
 
   useEffect(() => {
     const token = session?.user.token;
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${process.env.BACKEND_URL}/course`, {
-          method: "GET",
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          Swal.fire({
-            title: "Fetch Failed",
-            icon: "error",
-            timer: 2000,
-            showConfirmButton: false,
-          }).then(() => {
-            window.location.href = "/";
-          });
-          return;
-        }
-
-        const data = await response.json();
-        setCourses(data.data);
-      } catch (error) {
-        Swal.fire({
-          title: "Fetch Failed",
-          icon: "error",
-          timer: 2000,
-          showConfirmButton: false,
-        }).then(() => {
-          window.location.href = "/";
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (token) {
-      fetchData();
       getMe(token).then((res) => setCourseStatus(res));
     }
   }, [session]);
@@ -77,48 +35,20 @@ export default function Learn() {
         </div>
 
         <div className="flex flex-col items-center gap-y-3">
-          {loading ? (
-            <div className="mt-5">
-              <CircularProgress />
-            </div>
-          ) : courseStatus ? (
+          {courseStatus ? (
             <div className="grid grid-cols-1 gap-5 w-full md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-              {session?.user.role === "user" &&
-                courses.map((course, index) => {
-                  const isCurrentCourse =
-                    index === parseInt(courseStatus.chapter) - 1;
-                  const isCompletedCourse =
-                    index <= parseInt(courseStatus.chapter) - 1;
-
-                  return isCompletedCourse ? (
-                    <CourseCard
-                      key={course._id}
-                      id={course._id}
-                      subject={course.subject}
-                      title={course.title}
-                      chapter={course.chapter}
-                      description={course.description}
-                      image={course.image}
-                      current={
-                        isCurrentCourse ? courseStatus.current : "review"
-                      }
-                    />
-                  ) : null;
-                })}
-
-              {session?.user.role === "admin" &&
-                courses.map((course) => (
-                  <CourseCard
-                    key={course._id}
-                    id={course._id}
-                    subject={course.subject}
-                    title={course.title}
-                    chapter={course.chapter}
-                    description={course.description}
-                    image={course.image}
-                    current=""
-                  />
-                ))}
+              <SubCard
+                sub="Human geography"
+                url="https://drive.google.com/file/d/1xteo9yqe829TtChXSv1f3MskQcw4C9R2/view?usp=sharing"
+              />
+              <SubCard
+                sub="Physical geography"
+                url="https://drive.google.com/file/d/1xteo9yqe829TtChXSv1f3MskQcw4C9R2/view?usp=sharing"
+              />
+              <SubCard
+                sub="Geography Techniques"
+                url="https://drive.google.com/file/d/1xteo9yqe829TtChXSv1f3MskQcw4C9R2/view?usp=sharing"
+              />
             </div>
           ) : (
             <div className="flex flex-col items-center gap-3">

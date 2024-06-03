@@ -2,11 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Swal from "sweetalert2";
-import { Alert, CSVRecord, Course } from "../../../../../interface";
+import { Alert, CSVRecord, Course } from "../../../../../../interface";
 import { CircularProgress } from "@mui/material";
 import EditAlert from "@/components/editAlert";
 import ExamFile from "@/components/uploadFile";
 import { getExamfile } from "@/libs/getfile";
+import Link from "next/link";
+import Image from "next/image";
+import { DriveURL } from "@/libs/driveURL";
 
 export default function LearnEdit() {
   const [id, setId] = useState("");
@@ -91,11 +94,13 @@ export default function LearnEdit() {
     const checkFile = async () => {
       try {
         const response = await fetch(
-          `/api/file/check?file=${course?.subject}_${course?.chapter}.csv`
+          `/api/file/check?file=${course?.subject}_${course?.subsubject}_${course?.unit}_${course?.chapter}.csv`
         );
         const result = await response.json();
         if (response.ok && result.status === "success") {
-          setExamFile(`${course?.subject}_${course?.chapter}.csv`);
+          setExamFile(
+            `${course?.subject}_${course?.subsubject}_${course?.unit}_${course?.chapter}.csv`
+          );
         } else {
           setExamFile(`No exam`);
         }
@@ -116,8 +121,10 @@ export default function LearnEdit() {
 
     if (course) {
       const cs = course.subject as string;
+      const ss = course.subsubject as string;
+      const un = course.unit as string;
       const cc = course.chapter as string;
-      const fileName = `${cs}_${cc}.csv`;
+      const fileName = `${cs}_${ss}_${un}_${cc}.csv`;
       getExamfile(fileName).then((res: Array<CSVRecord>) => setExam(res));
     }
   }, [course]);
@@ -187,9 +194,7 @@ export default function LearnEdit() {
           <CircularProgress />
         </div>
       ) : (
-        <h1 className="text-3xl font-semibold mb-6 mt-5">
-          {course?.subject}, {course?.chapter}
-        </h1>
+        <h1 className="text-3xl font-semibold mb-6 mt-5">{course?.subject}</h1>
       )}
       <small className="-mt-5 mb-6 text-lg">Update chapter</small>
       <div
@@ -245,9 +250,15 @@ export default function LearnEdit() {
               <div className="flex flex-col space-y-3 mt-2">
                 <div className="w-full flex flex-row justify-center items-center gap-x-3">
                   <label htmlFor="text" className="font-bold text-xl">
-                    Subject
+                    Sub:
                   </label>
-                  <h1 className="text-xl">{course?.subject}</h1>
+                  <h1 className="text-xl">{course?.subsubject}</h1>
+                </div>
+                <div className="w-full flex flex-row justify-center items-center gap-x-3">
+                  <label htmlFor="text" className="font-bold text-xl">
+                    Unit:
+                  </label>
+                  <h1 className="text-xl">{course?.unit}</h1>
                   <label htmlFor="text" className="font-bold text-xl">
                     Chapter:
                   </label>
@@ -336,8 +347,29 @@ export default function LearnEdit() {
                   className="my-4 p-4 border rounded-md bg-gray-100"
                 >
                   <h2 className="text-xl font-semibold mb-2">
-                    {question.question}
+                    {index + 1}. {question.question}{" "}
+                    {question.image ? (
+                      <Link
+                        href={question.image}
+                        className="font-normal text-md text-orange"
+                      >
+                        Image
+                      </Link>
+                    ) : (
+                      ""
+                    )}
                   </h2>
+                  {question.image && (
+                    <div className="w-full sm:w-1/2 relative p-24 my-3">
+                      <Image
+                        style={{ borderRadius: "9px" }}
+                        src={DriveURL(question.image)}
+                        fill={true}
+                        objectFit="cover"
+                        alt={question.question}
+                      ></Image>
+                    </div>
+                  )}
                   <ul className="list-disc list-inside">
                     <li>{question.q1}</li>
                     <li>{question.q2}</li>

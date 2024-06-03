@@ -1,5 +1,7 @@
 export default async function AddCourse(
   subject: string,
+  sub: string,
+  unit: string,
   title: string,
   chapter: string,
   description: string,
@@ -15,6 +17,8 @@ export default async function AddCourse(
     },
     body: JSON.stringify({
       subject: subject,
+      subsubject: sub,
+      unit: unit,
       title: title,
       chapter: chapter,
       description: description,

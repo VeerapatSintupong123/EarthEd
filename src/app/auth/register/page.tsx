@@ -21,7 +21,7 @@ export default function Register() {
   const [schoolName, setschoolName] = useState("");
   const [schoolProvince, setSchoolProvince] = useState("");
   const [schoolLevel, setSchoolLevel] = useState("");
-  const [policy, setPolicy] = useState("");
+  const [policy, setPolicy] = useState<boolean>();
   const code = Math.floor(100000 + Math.random() * 900000).toString();
 
   const [menu, setMenu] = useState<number>(1);
@@ -48,7 +48,7 @@ export default function Register() {
     )
       return;
 
-    if (!policy.match("Policy")) {
+    if (!policy) {
       Swal.fire({
         title: "Privacy Policy",
         text: "Please read and agree Privacy Policy",
@@ -396,7 +396,7 @@ export default function Register() {
               name="Policy"
               id="policy"
               onClick={() => {
-                setPolicy("Policy");
+                setPolicy(!policy);
               }}
             />
             <label htmlFor="Policy" className="ml-3">

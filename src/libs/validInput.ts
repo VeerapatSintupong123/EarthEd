@@ -2,8 +2,11 @@ import Swal from "sweetalert2";
 import { Alert } from "../../interface";
 
 export const ValidAdd = (
-    subject:string,title:string,chapter:string,desciption:string,last:string,image:string,video:string )=>{
-    if (!subject || !title || !chapter || !desciption) {
+    subject:string,sub:string,unit:string,title:string,
+    chapter:string,desciption:string,last:string,image:string,video:string )=>{
+
+    console.log(subject);
+    if (!subject || !sub || !unit|| !title || !chapter || !desciption || !image || !video) {
         Swal.fire({
           title: "Invalid Input",
           text: "Please provide information",
@@ -17,6 +20,26 @@ export const ValidAdd = (
         Swal.fire({
           title: "Invalid Subject",
           text: "Please select subject",
+          icon: "error",
+          timer: 2000,
+        });
+        return false;
+      }
+
+      if (sub.match("Select Sub")) {
+        Swal.fire({
+          title: "Invalid Sub",
+          text: "Please select sub",
+          icon: "error",
+          timer: 2000,
+        });
+        return false;
+      }
+
+      if (unit.match("Select Unit")) {
+        Swal.fire({
+          title: "Invalid Unit",
+          text: "Please select unit",
           icon: "error",
           timer: 2000,
         });
