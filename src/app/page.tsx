@@ -4,10 +4,12 @@ import ImageSlider from "@/components/imageSlider";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import QuestBox from "@/components/questBox";
 
 const Home = () => {
   return (
     <main className="flex flex-col items-center p-3 overflow-hidden">
+      {/* Intro */}
       <div
         className="z-10 px-7 py-5 shadow border border-gray-300 space-y-5 bg-white rounded-xl 
         flex flex-col w-full md:w-4/5 lg:w-4/5 xl:w-2/3 mt-3"
@@ -44,6 +46,17 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Question Box */}
+      <div className="flex flex-col items-center mt-10 gap-y-5 w-full md:w-4/5 lg:w-4/5 xl:w-3/6">
+        <div
+          className="bg-white w-full p-10 rounded-xl flex flex-col items-center"
+          style={{ boxShadow: "rgb(38, 57, 77) 0px 20px 30px -10px" }}
+        >
+          <QuestBox type="example" name="" />
+        </div>
+      </div>
+
+      {/* Contact */}
       <div
         className="flex flex-col items-center mt-10 gap-y-5 w-full md:w-4/5 
       lg:flex-row lg:gap-x-5 xl:w-2/3"

@@ -7,7 +7,9 @@ const nextConfig = {
         EMAILJS_SERVICE: process.env.EMAILJS_SERVICE,
         EMAILJS_TEMPLATE: process.env.EMAILJS_TEMPLATE,
         SLIPOK_ENDPOINT:process.env.SLIPOK_ENDPOINT,
-        SLIPOK_KEY:process.env.SLIPOK_KEY
+        SLIPOK_KEY:process.env.SLIPOK_KEY,
+        EXAMPLE_GG:process.env.EXAMPLE_GG,
+        MAIN_GG:process.env.MAIN_GG
     },
     images: {
         remotePatterns: [
